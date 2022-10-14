@@ -128,6 +128,18 @@ ListaF* insere_func (ListaF* li, TFuncionario* f) {
     return li;
 } 
 
+void imprime_listaF (ListaF* li) {
+    ListaF* p;
+    for (p = li; p != NULL; p = p->prox)
+        printf("info = %d\n", p->func->nome);
+}
+
+void imprime_listaD (ListaD* li) {
+    ListaD* p;
+    for (p = li; p != NULL; p = p->prox)
+        printf("info = %d\n", p->dep->nome);
+}
+
 typedef struct listaDep
 {
     TDepartamento* dep;
@@ -204,6 +216,9 @@ void join(char *nome_arq_dept, char *nome_arq_funcionarios, char *nome_arq_join)
             }
         fclose(arq_dept);
     }
+
+    imprime_listaD(ld);
+    imprime_listaF(lf);
 
     //Não preciso mais dos arquivos
     arq_out = fopen(nome_arq_join, "w");
