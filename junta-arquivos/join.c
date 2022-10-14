@@ -111,23 +111,36 @@ typedef struct listaFunc
     struct listaFunc* prox;
 } ListaF;
 
-ListaF* insere_func (ListaF* li, TFuncionario* f) {
-    ListaF* novo = (ListaF*) malloc(sizeof(ListaF));
+void insere_fimF(ListaF **ld, TFuncionario *f)
+{
+    //create a new node
+    ListaF *novo = malloc(sizeof(ListaF));
     novo->func = f;
-    novo->prox = NULL;
-    ListaF* p = li;
-    if (p == NULL) { //se a lista estiver vazia
-        li = novo;
-    }
-    else {
-        while (p->prox != NULL) { //encontra o ultimo elemento
+    novo->prox= NULL;
+
+    //if ld is NULL, it is an empty list
+    if(*ld == NULL)
+         *ld = novo;
+    //Otherwise, find the last node and add the novo
+    else
+    {
+        ListaF *p = *ld;
+
+        //p's next address will be NULL.
+        while(p->prox != NULL)
+        {
             p = p->prox;
         }
+
+        //add the novo at the end of the linked list
         p->prox = novo;
     }
-    return li;
-} 
 
+}
+
+ListaF* cria_listaF(void){
+    return NULL;
+}
 
 typedef struct listaDep
 {
@@ -135,33 +148,56 @@ typedef struct listaDep
     struct listaDep* prox;
 } ListaD;
 
-ListaD* insere_dep (ListaD* li, TDepartamento* d) {
-    ListaD* novo = (ListaD*) malloc(sizeof(ListaD));
+ListaD* cria_listaD(void){
+    return NULL;
+}
+
+void insere_fimD(ListaD **ld, TDepartamento *d)
+{
+    //create a new node
+    ListaD *novo = malloc(sizeof(ListaD));
     novo->dep = d;
-    novo->prox = NULL;
-    ListaD* p = li;
-    if (p == NULL) { //se a lista estiver vazia
-        li = novo;
-    }
-    else {
-        while (p->prox != NULL) { //encontra o ultimo elemento
+    novo->prox= NULL;
+
+    //if ld is NULL, it is an empty list
+    if(*ld == NULL)
+         *ld = novo;
+    //Otherwise, find the last node and add the novo
+    else
+    {
+        ListaD *p = *ld;
+
+        //p's next address will be NULL.
+        while(p->prox != NULL)
+        {
             p = p->prox;
         }
+
+        //add the novo at the end of the linked list
         p->prox = novo;
     }
-    return li;
-} 
+
+}
+
 
 void imprime_listaF (ListaF* li) {
-    ListaF* p;
-    for (p = li; p != NULL; p = p->prox)
-        printf("info = %s\n", p->func->nome);
+    ListaF* p = li;
+    while (p != NULL)
+    {
+        printf("%s->", p->func->nome);
+        p=p->prox;
+    }
+    printf("\nAAAAAAAA");
 }
 
 void imprime_listaD (ListaD* li) {
-    ListaD* p;
-    for (p = li; p != NULL; p = p->prox)
-        printf("info = %s\n", p->dep->nome);
+    ListaD* p = li;
+    while (p != NULL)
+    {
+        printf("%s->", p->dep->nome);
+        p=p->prox;
+    }
+    printf("\nAAAAAAAA");
 }
 
 void escreve_registro(FILE* arq_out, TDepartamento* dep, TFuncionario* func){
@@ -195,8 +231,8 @@ void join(char *nome_arq_dept, char *nome_arq_funcionarios, char *nome_arq_join)
     FILE* arq_func;
     FILE* arq_out;
 
-    ListaD* ld = NULL;
-    ListaF* lf = NULL;
+    ListaD* ld = cria_listaD();
+    ListaF* lf = cria_listaF();
 
     arq_dept = fopen(nome_arq_dept, "r");
     if(arq_dept != NULL){
@@ -206,11 +242,11 @@ void join(char *nome_arq_dept, char *nome_arq_funcionarios, char *nome_arq_join)
                 //Adicionando na memoria os departamentos e funcionarios
                 while (!feof(arq_dept))
                 {
-                    insere_dep(ld, le_departamento(arq_dept));
+                    insere_fimD(&ld, le_departamento(arq_dept));
                 }
 
                 while (!feof(arq_func)){
-                    insere_func(lf, le_funcionario(arq_func));
+                    insere_fimF(&lf, le_funcionario(arq_func));
                 }
 
                 fclose(arq_func);
@@ -218,7 +254,9 @@ void join(char *nome_arq_dept, char *nome_arq_funcionarios, char *nome_arq_join)
         fclose(arq_dept);
     }
 
+    printf("\nimprime dep\n");
     imprime_listaD(ld);
+    printf("\nimprime funcs\n");
     imprime_listaF(lf);
 
     //Não preciso mais dos arquivos
