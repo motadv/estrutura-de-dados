@@ -128,17 +128,6 @@ ListaF* insere_func (ListaF* li, TFuncionario* f) {
     return li;
 } 
 
-void imprime_listaF (ListaF* li) {
-    ListaF* p;
-    for (p = li; p != NULL; p = p->prox)
-        printf("info = %d\n", p->func->nome);
-}
-
-void imprime_listaD (ListaD* li) {
-    ListaD* p;
-    for (p = li; p != NULL; p = p->prox)
-        printf("info = %d\n", p->dep->nome);
-}
 
 typedef struct listaDep
 {
@@ -162,6 +151,18 @@ ListaD* insere_dep (ListaD* li, TDepartamento* d) {
     }
     return li;
 } 
+
+void imprime_listaF (ListaF* li) {
+    ListaF* p;
+    for (p = li; p != NULL; p = p->prox)
+        printf("info = %s\n", p->func->nome);
+}
+
+void imprime_listaD (ListaD* li) {
+    ListaD* p;
+    for (p = li; p != NULL; p = p->prox)
+        printf("info = %s\n", p->dep->nome);
+}
 
 void escreve_registro(FILE* arq_out, TDepartamento* dep, TFuncionario* func){
     //Escrever:
@@ -241,6 +242,7 @@ void join(char *nome_arq_dept, char *nome_arq_funcionarios, char *nome_arq_join)
                 
                 d = d->prox;
             }
+            fclose(arq_out);
     }
     
     
