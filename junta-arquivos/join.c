@@ -113,6 +113,10 @@ typedef struct listaFunc
 
 void insere_fimF(ListaF **ld, TFuncionario *f)
 {
+    if(f == NULL){
+        return;
+    }
+
     //create a new node
     ListaF *novo = malloc(sizeof(ListaF));
     novo->func = f;
@@ -154,6 +158,10 @@ ListaD* cria_listaD(void){
 
 void insere_fimD(ListaD **ld, TDepartamento *d)
 {
+    if(d == NULL){
+        return;
+    }
+
     //create a new node
     ListaD *novo = malloc(sizeof(ListaD));
     novo->dep = d;
@@ -184,10 +192,10 @@ void imprime_listaF (ListaF* li) {
     ListaF* p = li;
     while (p != NULL)
     {
-        printf("%s->", p->func->nome);
+        printf("%s\n", p->func->nome);
         p=p->prox;
     }
-    printf("\nAAAAAAAA");
+
 }
 
 void imprime_listaD (ListaD* li) {
@@ -197,7 +205,6 @@ void imprime_listaD (ListaD* li) {
         printf("%s->", p->dep->nome);
         p=p->prox;
     }
-    printf("\nAAAAAAAA");
 }
 
 void escreve_registro(FILE* arq_out, TDepartamento* dep, TFuncionario* func){
@@ -208,20 +215,7 @@ void escreve_registro(FILE* arq_out, TDepartamento* dep, TFuncionario* func){
     //cod func
     //nome func
     if(arq_out != NULL){
-        fwrite(&dep->cod_dept, sizeof(int), 1, arq_out);
-        fputc(';', arq_out);
-
-        fwrite(&dep->sala, sizeof(int), 1, arq_out);
-        fputc(';', arq_out);
-
-        fwrite(dep->nome, sizeof(char), sizeof(dep->nome), arq_out);
-        fputc(';', arq_out);
-
-        fwrite(&func->cod_func, sizeof(int), 1, arq_out);
-        fputc(';', arq_out);
-
-        fwrite(func->nome, sizeof(char), sizeof(func->nome), arq_out);
-        fputc(';', arq_out);
+        fprintf(arq_out, "%d;%d;%s;%d;%s;\n", dep->cod_dept, dep->sala, dep->nome, func->cod_func, func->nome);
     }
 }
 
@@ -254,10 +248,10 @@ void join(char *nome_arq_dept, char *nome_arq_funcionarios, char *nome_arq_join)
         fclose(arq_dept);
     }
 
-    printf("\nimprime dep\n");
-    imprime_listaD(ld);
-    printf("\nimprime funcs\n");
-    imprime_listaF(lf);
+    // printf("\n\n imprime dep \n\n");
+    // imprime_listaD(ld);
+    // printf("\n\n imprime funcs \n\n");
+    // imprime_listaF(lf);
 
     //Não preciso mais dos arquivos
     arq_out = fopen(nome_arq_join, "w");
@@ -282,8 +276,6 @@ void join(char *nome_arq_dept, char *nome_arq_funcionarios, char *nome_arq_join)
             }
             fclose(arq_out);
     }
-    
-    
 }
 
 int main() {
