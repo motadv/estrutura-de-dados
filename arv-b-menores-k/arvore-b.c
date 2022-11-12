@@ -228,52 +228,46 @@ void particiona(TNo *P, int d, int pos, int chave, TNo *pt) {
     // A inserção da chave d em W fez o número de chaves de P diminuir para D
     P->m = d;
 }
-
-void encontra_menor_k(TNo* raiz, int k, TLista* lista_k){
+void encontra_menor_k(TNo* raiz, int k, TLista** inList){
     TNo* no = raiz;
-
 
     //Se ponteiro 0 != null
     if (no->p[0] != NULL){
         //Chama função pra ponteiro 0.
-        encontra_menor_k(no->p[0], k, lista_k);
+        encontra_menor_k(no->p[0], k, inList);
     }
 
-    //Percorrer as m chaves do nó enquanto i < k
-    printf("debug\nm = %d\n", no->m);
-    for (int i = 0; i < no->m; i++)
-    {
-        printf("[%d:%d] > ",i, no->s[i]);
-    }
-    
+    //Percorrer as m chaves do nó enquanto i < k    
     int i = 0;
     while (i < no->m && no->s[i] < k)
     {
+        // printf("[%d:%d]>",i, no->s[i]);
         int chave = no->s[i];
-        printf("%d > ", chave);
-
-        //adiciona i na lista
-        lista_k = insere_ordenado(lista_k, chave);
-
-        //Se ponteiro i+1 != null
-        if(no->p[i+1] != NULL){
-            //chama função pra ponteiro i+1.
-            encontra_menor_k(no->p[i+1], k, lista_k);
+        if(chave < k){
+            //adiciona i na lista
+            *inList = insere_ordenado(*inList, chave);
+            //Se ponteiro i+1 != null
+            if(no->p[i+1] != NULL){
+                //chama função pra ponteiro i+1.
+                encontra_menor_k(no->p[i+1], k, inList);
+            }
+            
         }
 
         //Próximo i
         i++;
     }
+
 }
 
 TLista *menor_k(TNo *raiz, int k) {
     //TODO: Implementar essa funcao
     TNo* aux = raiz;
-    TLista* list_to_return;
+    TLista* newList = NULL;
 
-    encontra_menor_k(aux, k, list_to_return);
+    encontra_menor_k(aux, k, &newList);
 
-    return list_to_return;
+    return newList;
 }
 
 
@@ -304,7 +298,7 @@ int main(int argc, char *argv[]) {
         ptr = strtok(NULL, delimitador);
     }
     scanf("%d", &k);
-    //imprime_arvore(raiz, 0);
+    // imprime_arvore(raiz, 0);
 
     TLista *lista = menor_k(raiz, k);
     imprime_lista(lista);
