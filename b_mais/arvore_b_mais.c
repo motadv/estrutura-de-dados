@@ -114,13 +114,17 @@ int busca(int chave, char *nome_arquivo_metadados, char *nome_arquivo_indice, ch
                     resultado = address;                    
                 }
 
-                return resultado;
                 //>>> Fim da Logica <<<
 
             fclose(fdados);
         }
         fclose(findice);
     }
+    
+    return resultado;
+
+    //Lógica em linguagem natural
+
     //Verifica se raiz é folha no metadado
         //Se for no folha
             //carrega folha na memoria
@@ -145,8 +149,6 @@ int busca(int chave, char *nome_arquivo_metadados, char *nome_arquivo_indice, ch
                 //imprime folha
                 //resultado estará no conteúdo do contador
                 //retorna conteudo do contador
-
-	return -1;
 }
 
 int main () {
