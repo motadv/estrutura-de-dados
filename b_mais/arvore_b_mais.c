@@ -55,17 +55,97 @@ int busca(int chave, char *nome_arquivo_metadados, char *nome_arquivo_indice, ch
 {
 	//TODO: Implementar essa função
 
+    int resultado;
+    int is_folha;
+    int contador;
+    int address;
+    TNoFolha* folha;
+    TNoInterno* indice;
+    TMetadados* meta;
+
+    //Carrega arquivo de metadados na memória
     FILE* fmetadado = fopen(nome_arquivo_metadados, "rb");
+    if(fmetadado != NULL){
+        meta = le_metadados(fmetadado);
+        fclose(fmetadado);
+    }
+    
+    //Abre arquivos de indice e dados
     FILE* findice = fopen(nome_arquivo_indice, "rb");
-    FILE* fdados = fopen(nome_arquivo_dados, "rb");
+    if (findice != NULL)
+    {
+        FILE* fdados = fopen(nome_arquivo_dados, "rb");
+        if(fdados != NULL)
+        {
+                //>>> Logica entra aqui <<<
+                is_folha = meta->raiz_folha;
+                address = meta->pont_raiz;
+                if(is_folha){
+                    fseek(fdados, address, SEEK_SET);
+                    folha = le_no_folha(meta->d, fdados);
+                    imprime_no_folha(meta->d, folha);
 
-    //Carrega o no raíz na memória
-        //Se for no folha, retorna o endereço dele
+                    resultado = meta->pont_raiz;
+                }
+                else
+                {
+                    address = meta->pont_raiz;
+                    while (!is_folha)
+                    {
+                        fseek(findice, address, SEEK_SET);
+                        indice = le_no_interno(meta->d, findice);
+                        imprime_no_interno(meta->d, indice);
 
+                        contador = 0;
+                        while (indice->chaves[contador] <= chave && contador < indice->m)
+                        {
+                            contador++;
+                        }
 
-    fclose(fmetadado);
-    fclose(findice);
-    fclose(fdados);
+                        is_folha = indice->aponta_folha;
+                        address = indice->p[contador];
+                    }
+
+                    //Proximo address é para uma folha:
+                    fseek(fdados, address, SEEK_SET);
+                    folha = le_no_folha(meta->d, fdados);
+                    imprime_no_folha(meta->d, folha);
+
+                    resultado = address;                    
+                }
+
+                return resultado;
+                //>>> Fim da Logica <<<
+
+            fclose(fdados);
+        }
+        fclose(findice);
+    }
+    //Verifica se raiz é folha no metadado
+        //Se for no folha
+            //carrega folha na memoria
+            //imprime no folha
+            //retorna endereço
+        //Se não for nó folha
+            //is_folha = 0
+
+            //Enquanto !is_folha:
+                //carrega indice na memoria
+                //imprime indice
+
+                //contador = 0
+                //Percorre nó enquanto chave[contador] < chave && contador < m
+                    //contador++
+                //Sai do loop com contador sendo ponteiro que tem que descer.
+
+                //is_folha = aponta folha
+
+            //Quando o nó finalmente for folha:
+                //carrega folha na memoria
+                //imprime folha
+                //resultado estará no conteúdo do contador
+                //retorna conteudo do contador
+
 	return -1;
 }
 
@@ -73,7 +153,7 @@ int main () {
     //Descomente essa linha de código caso deseje imprimir o conteúdo dos arquivos de entrada para analisar
     //o comportamento da sua implementação
 
-    imprime_arquivos();
+    // imprime_arquivos();
 
     /* Le chave a ser buscada */
     int chave;

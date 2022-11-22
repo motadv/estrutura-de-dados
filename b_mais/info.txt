@@ -1,0 +1,50 @@
+*** Arquivo de Metadados ***
+d = 2, pt raiz = 0, raiz folha = 0
+pt prox no interno livre = 144, pt prox no folha livre = 2568
+
+
+*** Arquivo de Indice ***
+(((Endereco 0)))
+NO INTERNO: (m = 1, pt pai = -1, aponta folha = 0)
+	[48]  37 [96]  -1 [-1]  -1 [-1]  -1  [-1] 
+
+(((Endereco 48)))
+NO INTERNO: (m = 2, pt pai = 0, aponta folha = 1)
+	[0]  15 [428]  25 [856]  -1 [-1]  -1  [-1] 
+
+(((Endereco 96)))
+NO INTERNO: (m = 2, pt pai = 0, aponta folha = 1)
+	[1284]  39 [1712]  55 [2140]  -1 [-1]  -1  [-1] 
+
+
+*** Arquivo de Dados ***
+(((Endereco 0)))
+NO FOLHA: (m = 2, pt pai = 48, pt prox = 428)
+	10, Joao
+	13, Ana Maria
+		
+(((Endereco 428)))
+NO FOLHA: (m = 2, pt pai = 48, pt prox = 856)
+	15, Jose
+	20, Mariana
+		
+(((Endereco 856)))
+NO FOLHA: (m = 2, pt pai = 48, pt prox = 1284)
+	25, Ronaldo
+	35, Marcela
+		
+(((Endereco 1284)))
+NO FOLHA: (m = 2, pt pai = 96, pt prox = 1712)
+	37, Leonardo
+	38, Karla
+		
+(((Endereco 1712)))
+NO FOLHA: (m = 2, pt pai = 96, pt prox = 2140)
+	39, Mario
+	50, Ricardo
+		
+(((Endereco 2140)))
+NO FOLHA: (m = 2, pt pai = 96, pt prox = -1)
+	55, Rosa
+	60, Michele
+		
